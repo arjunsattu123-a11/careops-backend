@@ -1,25 +1,27 @@
 from fastapi import FastAPI, HTTPException
 from pymongo import MongoClient
 from datetime import datetime
+import os
 
-# 1️⃣ Create app FIRST
 app = FastAPI()
 
-# 2️⃣ MongoDB connection
-client = MongoClient("mongodb://localhost:27017/")
+# Use environment variable for security
+MONGO_URL = os.getenv("MONGO_URL")
+
+client = MongoClient(MONGO_URL)
 db = client["careops_db"]
 
 bookings = db["bookings"]
 inventory = db["inventory"]
 
 
-# 3️⃣ Health check
+# 3Health check
 @app.get("/")
 def root():
     return {"message": "CareOps backend running"}
 
 
-# 4️⃣ Booking API (FINAL ROUND READY)
+# 4 Booking API (FINAL ROUND READY)
 @app.post("/bookings")
 def create_booking(name: str, service: str):
 
